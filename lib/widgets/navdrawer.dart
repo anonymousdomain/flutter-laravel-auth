@@ -24,7 +24,12 @@ class NavDrawer extends StatelessWidget {
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: ((context) => PostsScreen()))),
                 ),
-                ListTile(title: Text('logout'), onTap: () {}),
+                ListTile(
+                    title: Text('logout'),
+                    onTap: () {
+                      Provider.of<Auth>(context, listen: false).logout();
+                      Navigator.pop(context);
+                    }),
               ],
             );
           } else {

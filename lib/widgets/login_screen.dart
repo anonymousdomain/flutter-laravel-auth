@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lara_fl/main.dart';
 import 'package:lara_fl/providers/auth.dart';
 import 'package:provider/provider.dart';
 
