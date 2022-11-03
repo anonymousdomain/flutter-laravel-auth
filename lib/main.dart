@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:lara_fl/providers/auth.dart';
+import 'package:provider/provider.dart';
+
+import 'widgets/navdrawer.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: ((context) => Auth()),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,35 +31,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Widget? child;
-  final bool _isAuth = false;
-  @override
-  void initState() {
-    super.initState();
-    
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const Icon(Icons.arrow_back),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Icon(Icons.message_rounded),
-            )
-          ],
-          elevation: 0.0,
-          backgroundColor: Colors.white54,
-          foregroundColor: Colors.blue.withOpacity(0.8),
-          title: const Text(
-            'devo',
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        centerTitle: true,
+        title: Text('dawit'),
+      ),
+      drawer: NavDrawer(),
+      body: Center(
+        child: Consumer<Auth>(
+          builder: ( context, value, child) {
+            if (value.authenticated) {
+              return Text('You are logged in');
+            } else {
+              return Text('You are not logged in');
+            }
+          },
         ),
-        body: child,
       ),
     );
   }
