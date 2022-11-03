@@ -13,10 +13,28 @@ class Auth extends ChangeNotifier {
   Future login({required Map credential}) async {
     di.Response response =
         await dio().post('auth/token', data: json.encode(credential));
-    String $token = json.decode(json.encode(response.data));
+    // String token = json.decode(json.encode(response.data));
+    String token = json.decode(json.encode(response.data))['token'];
+    log(token);
+    await attempt(token);
     _authenticated = true;
-    log($token);
     notifyListeners();
+  }
+
+  Future attempt(String token) async {
+    try {
+      di.Response res = await dio().get(
+        'auth/user',
+        options: di.Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      log(res.toString());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   void logout() {
