@@ -12,6 +12,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _email.text = 'dawityitagesu@gmail.com';
+    _password.text = 'password';
+  }
+
   void submit() async {
     Provider.of<Auth>(context, listen: false)
         .login(credential: {'email': _email.text, 'password': _password.text});

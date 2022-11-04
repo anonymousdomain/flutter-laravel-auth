@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lara_fl/providers/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final storage = FlutterSecureStorage();
+  void _attemptAuthentication() async {
+    String? key = await storage.read(key: 'auth');
+    // ignore: use_build_context_synchronously
+    Provider.of<Auth>(context, listen: false).attempt(key);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _attemptAuthentication();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       drawer: NavDrawer(),
       body: Center(
         child: Consumer<Auth>(
-          builder: ( context, value, child) {
+          builder: (context, value, child) {
             if (value.authenticated) {
               return Text('You are logged in');
             } else {
