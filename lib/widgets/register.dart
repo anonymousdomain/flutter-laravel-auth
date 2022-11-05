@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lara_fl/providers/auth.dart';
-import 'package:lara_fl/widgets/posts_screen.dart';
+
 import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
@@ -22,8 +22,9 @@ class _RegisterState extends State<Register> {
       'password': _password.text
     });
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: ((context) => PostsScreen())));
+    Navigator.pop(context);
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: ((context) => PostsScreen())));
   }
 
   @override
@@ -72,17 +73,21 @@ class _RegisterState extends State<Register> {
                 ),
                 TextFormField(
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      labelText: 'Password',
-                      suffixIcon: GestureDetector(
-                        onTap: (){ Provider.of<Auth>(context)
-                            .toggleText();},
-                        child: Icon(Icons.toggle_off_rounded,color: Colors.indigo,size:35,),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    labelText: 'Password',
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        Provider.of<Auth>(context, listen: false).toggleText();
+                      },
+                      child: Icon(
+                        Icons.toggle_off_rounded,
+                        color: Colors.indigo,
+                        size: 35,
                       ),
-                      ),
-                  obscureText:
-                      Provider.of<Auth>(context).obscureText,
+                    ),
+                  ),
+                  obscureText: Provider.of<Auth>(context).obscureText,
                   controller: _password,
                   autofocus: true,
                 ),

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:lara_fl/providers/auth.dart';
 
 Dio dio() {
   var dio = Dio(
@@ -13,20 +12,19 @@ Dio dio() {
     ),
   );
 
-  // ignore: avoid_single_cascade_in_expression_statements
-  dio
-    ..interceptors.add(InterceptorsWrapper(
-        onRequest: ((options, handler) => requestInterceptor(options))));
+  // dio
+  //   ..interceptors.add(InterceptorsWrapper(
+  //       onRequest: ((options, handler) => requestInterceptor(options))));
 
   return dio;
 }
 
-dynamic requestInterceptor(RequestOptions options) async {
-  if (options.headers.containsKey('auth')) {
-    var token = await Auth().getToken();
+// dynamic requestInterceptor(RequestOptions options) async {
+//   if (options.headers.containsKey('auth')) {
+//     var token = await Auth().getToken();
 
-    options.headers.addAll({
-      'Authorization': 'Bearer $token',
-    });
-  }
-}
+//     options.headers.addAll({
+//       'Authorization': 'Bearer $token',
+//     });
+//   }
+// }

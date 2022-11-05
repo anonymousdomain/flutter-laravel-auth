@@ -70,11 +70,23 @@ class Auth extends ChangeNotifier {
   }
 
   Future getToken() async {
-    await storage.read(key: 'auth');
+    final token = await storage.read(key: 'auth');
+    return token;
   }
 
-  void logout() {
+  Future deleteToken() async {
+    await storage.delete(key: 'auth');
+  }
+
+  Future logout() async {
+    final token = await storage.read(key: 'auth');
     _authenticated = false;
+    await dio().delete('auth/token/delete',
+        data: {'deviceId': await getDeviceId()},
+        options: di.Options(headers: {
+          'Authorization': 'Bearer $token',
+        }));
+    await deleteToken();
     notifyListeners();
   }
 
