@@ -15,12 +15,26 @@ class Auth extends ChangeNotifier {
   User? get user => _user;
   final storage = FlutterSecureStorage();
   bool get authenticated => _authenticated;
+   bool _obscureText = false;
+
+  bool get obscureText => _obscureText;
+
+  Future register({credential}) async {
+    String deviceId = await getDeviceId();
+    di.Response res = await dio().post('user/register',
+        data: json.encode(credential..addAll({'deviceId': deviceId})));
+    String token = await res.data['token'];
+    log(token);
+    await attempt(token);
+    await storeToken(token);
+  }
+
   Future login({required Map credential}) async {
     String deviceId = await getDeviceId();
     di.Response response = await dio().post('auth/token',
         data: json.encode(credential..addAll({'deviceId': deviceId})));
-    String token = response.data['token'];
-    log(token);
+
+    String token = await response.data['token'];
     await attempt(token);
     await storeToken(token);
   }
@@ -57,6 +71,11 @@ class Auth extends ChangeNotifier {
 
   void logout() {
     _authenticated = false;
+    notifyListeners();
+  }
+
+  void toggleText() {
+    _obscureText = !_obscureText;
     notifyListeners();
   }
 }

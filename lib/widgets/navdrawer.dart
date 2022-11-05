@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lara_fl/widgets/login_screen.dart';
 import 'package:lara_fl/widgets/posts_screen.dart';
+import 'package:lara_fl/widgets/register.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
@@ -17,7 +18,7 @@ class NavDrawer extends StatelessWidget {
             return ListView(
               children: [
                 ListTile(
-                  title: Text(auth.user?.email??''),
+                  title: Text(auth.user?.email ?? ''),
                 ),
                 ListTile(
                   title: Text('posts'),
@@ -35,7 +36,10 @@ class NavDrawer extends StatelessWidget {
           } else {
             return ListView(
               children: [
-                ListTile(title: Text('register'), onTap: () {}),
+                ListTile(
+                    title: Text('register'),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => Register())))),
                 ListTile(
                   title: Text('Login'),
                   onTap: (() => Navigator.push(

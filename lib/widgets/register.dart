@@ -3,35 +3,42 @@ import 'package:lara_fl/providers/auth.dart';
 import 'package:lara_fl/widgets/posts_screen.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterState extends State<Register> {
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+
+  void submit() async {
+    Provider.of<Auth>(context, listen: false).register(credential: {
+      'name': _name.text,
+      'email': _email.text,
+      'password': _password.text
+    });
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => PostsScreen())));
+  }
+
   @override
   void initState() {
     super.initState();
-    _email.text = 'dawityitagesu@gmail.com';
-    _password.text = 'password';
-  }
-
-  void submit() async {
-    Provider.of<Auth>(context, listen: false)
-        .login(credential: {'email': _email.text, 'password': _password.text});
-    Navigator.push(
-        context, MaterialPageRoute(builder: ((context) => PostsScreen())));
+    _email.text = 'who@gmail.com';
+    _name.text = 'devo';
+    _password.text = 'passme';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('login'),
+        title: Text('Register'),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -41,6 +48,17 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      labelText: 'Name',
+                      hintText: 'Your Name'),
+                  controller: _name,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
                 TextFormField(
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -58,25 +76,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(10)),
                       labelText: 'Password',
                       suffixIcon: GestureDetector(
-                        onTap: () {
-                          Provider.of<Auth>(context).toggleText();
-                        },
-                        child: Icon(
-                          Icons.toggle_off_rounded,
-                          color: Colors.indigo,
-                          size: 35,
-                        ),
-                      )),
-                  obscureText: Provider.of<Auth>(context).obscureText,
+                        onTap: (){ Provider.of<Auth>(context)
+                            .toggleText();},
+                        child: Icon(Icons.toggle_off_rounded,color: Colors.indigo,size:35,),
+                      ),
+                      ),
+                  obscureText:
+                      Provider.of<Auth>(context).obscureText,
                   controller: _password,
+                  autofocus: true,
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: TextButton(
-                      onPressed: () {
-                        submit();
-                      },
-                      child: Text('Login')),
+                  child: TextButton(onPressed: submit, child: Text('Register')),
                 )
               ],
             ),

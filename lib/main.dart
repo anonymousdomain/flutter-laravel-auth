@@ -33,6 +33,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final storage = FlutterSecureStorage();
+
   void _attemptAuthentication() async {
     String? key = await storage.read(key: 'auth');
     // ignore: use_build_context_synchronously
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         elevation: 0.0,
         centerTitle: true,
-        title: Text('dawit'),
+        title: Text('welcome'),
       ),
       drawer: NavDrawer(),
       body: Center(
