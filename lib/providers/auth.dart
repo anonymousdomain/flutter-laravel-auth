@@ -15,7 +15,7 @@ class Auth extends ChangeNotifier {
   User? get user => _user;
   final storage = FlutterSecureStorage();
   bool get authenticated => _authenticated;
-   bool _obscureText = false;
+  bool _obscureText = false;
 
   bool get obscureText => _obscureText;
 
@@ -67,6 +67,10 @@ class Auth extends ChangeNotifier {
 
   Future storeToken(String token) async {
     await storage.write(key: 'auth', value: token);
+  }
+
+  Future getToken() async {
+    await storage.read(key: 'auth');
   }
 
   void logout() {
