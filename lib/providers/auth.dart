@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as di;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lara_fl/helper/dio.dart';
+import 'package:lara_fl/models/error.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 
 import '../models/user.dart';
@@ -12,6 +13,8 @@ import '../models/user.dart';
 class Auth extends ChangeNotifier {
   bool _authenticated = false;
   User? _user;
+  ValidationError? _validationError;
+  ValidationError? get validationError => _validationError;
   User? get user => _user;
   final storage = FlutterSecureStorage();
   bool get authenticated => _authenticated;
@@ -21,22 +24,34 @@ class Auth extends ChangeNotifier {
 
   Future register({credential}) async {
     String deviceId = await getDeviceId();
-    di.Response res = await dio().post('user/register',
-        data: json.encode(credential..addAll({'deviceId': deviceId})));
-    String token = await res.data['token'];
-    log(token);
-    await attempt(token);
-    await storeToken(token);
+    try {
+      di.Response res = await dio().post('user/register',
+          data: json.encode(credential..addAll({'deviceId': deviceId})));
+      String token = await res.data['token'];
+      await attempt(token);
+      await storeToken(token);
+    } on di.DioError catch (e) {
+      if (e.response?.statusCode == 422) {
+        _validationError = ValidationError.fromJson(e.response!.data['errors']);
+        notifyListeners();
+      }
+    }
   }
 
   Future login({required Map credential}) async {
     String deviceId = await getDeviceId();
-    di.Response response = await dio().post('auth/token',
-        data: json.encode(credential..addAll({'deviceId': deviceId})));
-
-    String token = await response.data['token'];
-    await attempt(token);
-    await storeToken(token);
+    try {
+      di.Response response = await dio().post('auth/token',
+          data: json.encode(credential..addAll({'deviceId': deviceId})));
+      String token = await response.data['token'];
+      await attempt(token);
+      await storeToken(token);
+    } on di.DioError catch (e) {
+      if (e.response?.statusCode == 422) {
+        _validationError = ValidationError.fromJson(e.response!.data['errors']);
+        notifyListeners();
+      }
+    }
   }
 
   Future attempt(String? token) async {
