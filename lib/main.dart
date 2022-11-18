@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lara_fl/providers/auth.dart';
+import 'package:lara_fl/screen/home.dart';
+import 'package:lara_fl/screen/onboarding_screen/onboarding.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/navdrawer.dart';
@@ -49,19 +51,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text('welcome'),
-      ),
-      drawer: NavDrawer(),
       body: Center(
         child: Consumer<Auth>(
           builder: (context, value, child) {
             if (value.authenticated) {
-              return Text('You are logged in');
+              return Home();
             } else {
-              return Text('You are not logged in');
+              return OnboardingScreen();
             }
           },
         ),

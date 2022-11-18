@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lara_fl/widgets/login_screen.dart';
-import 'package:lara_fl/widgets/posts_screen.dart';
-import 'package:lara_fl/widgets/register.dart';
+import 'package:lara_fl/screen/login_screen.dart';
+import 'package:lara_fl/screen/posts_screen.dart';
+import 'package:lara_fl/screen/register.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
