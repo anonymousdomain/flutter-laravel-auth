@@ -7,32 +7,31 @@ class FirstScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(20),
-          child: Center(
-              child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                alignment: Alignment.topCenter,
-                Images.hit,
-                fit: BoxFit.scaleDown,
-                width: 200,
-              ),
-              SizedBox(
+    return Container(
+      color: Colors.red,
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(
+            child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              alignment: Alignment.topCenter,
+              Images.hit,
+              fit: BoxFit.scaleDown,
+              width: 200,
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SizedBox(
                 height: 40,
-              ),
-              SizedBox(
-                  height: 40,
-                  child: Text(
-                    'Hit',
-                    style: TextStyle(color: Colors.indigo),
-                  ))
-            ],
-          )),
-        ),
+                child: Text(
+                  'Hit',
+                  style: TextStyle(color: Colors.indigo),
+                ))
+          ],
+        )),
       ),
     );
   }

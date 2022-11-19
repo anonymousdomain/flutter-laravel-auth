@@ -5,8 +5,6 @@ import 'package:lara_fl/screen/home.dart';
 import 'package:lara_fl/screen/onboarding_screen/onboarding.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/navdrawer.dart';
-
 void main() {
   runApp(ChangeNotifierProvider(
     create: ((context) => Auth()),
