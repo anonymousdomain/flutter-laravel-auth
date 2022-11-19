@@ -1,9 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:lara_fl/main.dart';
 import 'package:lara_fl/providers/auth.dart';
+import 'package:lara_fl/screen/home.dart';
 import 'package:lara_fl/screen/posts_screen.dart';
 import 'package:lara_fl/screen/register.dart';
+import 'package:lara_fl/widgets/custom_button.dart';
+import 'package:lara_fl/widgets/custom_textformfiled.dart';
 
 import 'package:provider/provider.dart';
 
@@ -36,13 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future submit() async {
     if (_formKey.currentState!.validate()) {
-      await Provider.of<Auth>(context, listen: false).login(credential: {
-        'email': _email.text,
-        'password': _password.text
-      }).then((value) => Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: ((context) => PostsScreen()))));
-      // ignore: use_build_context_synchronously
+      await Provider.of<Auth>(context, listen: false).login(
+          credential: {'email': _email.text, 'password': _password.text});
+
       ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: ((context) => HomePage())));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(_snackBarError);
     }
@@ -51,103 +56,64 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('login'),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 40),
-        child: Stack(children: [
-          Form(
-            key: _formKey,
-            child: Scrollbar(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          labelText: 'Email',
-                          hintText: 'your@email.com'),
-                      controller: _email,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return Provider.of<Auth>(context, listen: false)
-                              .validationError
-                              ?.email;
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        labelText: 'Password',
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            Provider.of<Auth>(context, listen: false)
-                                .toggleText();
-                          },
-                          child: Icon(
-                            Icons.toggle_off_rounded,
-                            color: Colors.indigo,
-                            size: 35,
-                          ),
-                        ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(children: [
+            Text('Login Here',
+                style: TextStyle(
+                    color: Colors.indigo,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 20,
+            ),
+            Form(
+              key: _formKey,
+              child: Scrollbar(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      CustomTextFormField(
+                        email: _email,
+                        label: 'Email',
+                        hint: 'example@gmail.com',
                       ),
-                      obscureText: Provider.of<Auth>(context).obscureText,
-                      controller: _password,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return Provider.of<Auth>(context, listen: false)
-                              .validationError
-                              ?.password;
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextButton(
-                          onPressed: () async {
-                            await submit();
-                          },
-                          child: Text('Login')),
-                    )
-                  ],
+                      SizedBox(
+                        height: 16,
+                      ),
+                      CustomTextFormField(
+                          email: _password,
+                          hint: 'Enter Your Password',
+                          label: 'Password'),
+                      CustomButton(onTap: submit, title: 'Login')
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-              bottom: -10,
-              left: 20,
-              child: Row(
-                children: [
-                  SizedBox(
-                    child: Text("Don't you have an account yet?"),
-                  ),
-                  TextButton(
-                      onPressed: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => Register()))),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.indigo),
-                      ))
-                ],
-              ))
-        ]),
+            SizedBox(
+              height: 20,
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: Text("Don't you have an account yet?"),
+                ),
+                TextButton(
+                    onPressed: () => Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: ((context) => Register()))),
+                    child: Text(
+                      'Register',
+                      style: TextStyle(color: Colors.indigo),
+                    ))
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }

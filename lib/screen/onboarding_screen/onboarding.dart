@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lara_fl/helper/images.dart';
 import 'package:lara_fl/screen/login_screen.dart';
 import 'package:lara_fl/screen/onboarding_screen/first_screen.dart';
+import 'package:lara_fl/widgets/custom_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -26,6 +27,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _controller.dispose();
     super.dispose();
   }
+
+  navigate() => Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: ((context) => LoginScreen())));
 
   @override
   Widget build(BuildContext context) {
@@ -79,20 +83,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
       bottomSheet: isLastPage
-          ? Container(
-              padding: EdgeInsets.all(8),
-              width: MediaQuery.of(context).size.width,
-              height: 80,
-              child: TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.indigo),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)))),
-                  onPressed: () => Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: ((context) => LoginScreen()))),
-                  child: Text('GetStarted')),
+          ? CustomButton(
+              title: 'Get Started',
+              onTap: navigate,
             )
           : Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
