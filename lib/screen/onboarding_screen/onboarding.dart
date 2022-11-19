@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lara_fl/helper/images.dart';
 import 'package:lara_fl/screen/login_screen.dart';
 import 'package:lara_fl/screen/onboarding_screen/first_screen.dart';
-import 'package:lara_fl/screen/onboarding_screen/second_screen.dart';
-import 'package:lara_fl/screen/onboarding_screen/third_screen.dart';
-import 'package:lara_fl/screen/register.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -15,9 +13,11 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   PageController _controller = PageController();
   List<Widget> screens = [
-    FirstScreen(),
-    SecondScreen(),
-    ThirdScreen(),
+    BuildPage(images: Images.hit, text: 'hello there welcome to our app hit'),
+    BuildPage(
+        images: Images.catchp,
+        text: 'this is A catch app that help you to train your dogs'),
+    BuildPage(images: Images.freinds, text: 'Ready To start'),
   ];
 
   bool isLastPage = false;
