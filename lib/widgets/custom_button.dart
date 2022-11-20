@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)))),
           onPressed: onTap,
-          child: Text(title)),
+          child: Text(title,style: TextStyle(color: Colors.white,fontSize:16),)),
     );
   }
 }

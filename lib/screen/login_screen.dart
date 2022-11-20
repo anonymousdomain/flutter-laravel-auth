@@ -1,14 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lara_fl/main.dart';
 import 'package:lara_fl/providers/auth.dart';
-import 'package:lara_fl/screen/home.dart';
-import 'package:lara_fl/screen/posts_screen.dart';
 import 'package:lara_fl/screen/register.dart';
 import 'package:lara_fl/widgets/custom_button.dart';
+import 'package:lara_fl/widgets/custom_snack_bar.dart';
 import 'package:lara_fl/widgets/custom_textformfiled.dart';
 
 import 'package:provider/provider.dart';
@@ -25,14 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _password = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  final SnackBar _snackBar = SnackBar(
-    content: Text('successfully logged in '),
-    duration: Duration(seconds: 2),
-  );
-  final SnackBar _snackBarError = SnackBar(
-    content: Text('faild to login'),
-    duration: Duration(seconds: 2),
-  );
+
   @override
   void initState() {
     super.initState();
@@ -45,11 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
       await Provider.of<Auth>(context, listen: false).login(
           credential: {'email': _email.text, 'password': _password.text});
 
-      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+          customSnackBar(context, 'successfully logged in', false));
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: ((context) => HomePage())));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(_snackBarError);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(customSnackBar(context, 'faild to login ', true));
     }
   }
 
@@ -96,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 20,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

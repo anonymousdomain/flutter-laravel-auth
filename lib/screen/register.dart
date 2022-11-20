@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:lara_fl/main.dart';
 import 'package:lara_fl/providers/auth.dart';
 import 'package:lara_fl/screen/login_screen.dart';
 import 'package:lara_fl/widgets/custom_button.dart';
+import 'package:lara_fl/widgets/custom_snack_bar.dart';
 import 'package:lara_fl/widgets/custom_textformfiled.dart';
 
 import 'package:provider/provider.dart';
@@ -23,14 +25,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordConfirm = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  final SnackBar _snackBar = SnackBar(
-    content: Text('successfully registerd in '),
-    duration: Duration(seconds: 2),
-  );
-  final SnackBar _snackBarError = SnackBar(
-    content: Text('faild to register'),
-    duration: Duration(seconds: 2),
-  );
+
   Future submit() async {
     if (_formKey.currentState!.validate()) {
       await Provider.of<Auth>(context, listen: false).register(credential: {
@@ -40,11 +35,13 @@ class _RegisterState extends State<Register> {
         // 'password_confirm': _passwordConfirm.text
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+          customSnackBar(context, 'successfully registerd in', false));
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: ((context) => HomePage())));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(_snackBarError);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(customSnackBar(context, 'faild to register', true));
     }
   }
 
@@ -102,44 +99,48 @@ class _RegisterState extends State<Register> {
                             SizedBox(
                               height: 16,
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 2),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromRGBO(158, 158, 158, 1)
-                                      .withOpacity(0.2)),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  labelText: 'PasswordConfirm',
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      Provider.of<Auth>(context, listen: false)
-                                          .toggleText();
-                                    },
-                                    child: Icon(
-                                      Icons.toggle_off_rounded,
-                                      color: Colors.indigo,
-                                      size: 35,
-                                    ),
-                                  ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: Colors.indigo.shade500,
+                                    )),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors.indigo, width: 2)),
+                                labelText: 'PasswordConfirm',
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    Provider.of<Auth>(context, listen: false)
+                                        .toggleText();
+                                  },
+                                  child: context.watch<Auth>().obscureText
+                                      ? Icon(
+                                          FeatherIcons.eyeOff,
+                                          color: Colors.indigo,
+                                        )
+                                      : Icon(
+                                          FeatherIcons.eye,
+                                          color: Colors.indigo,
+                                        ),
                                 ),
-                                obscureText:
-                                    Provider.of<Auth>(context).obscureText,
-                                controller: _passwordConfirm,
-                                autofocus: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'password confirm field is required';
-                                  }
-                                  if (value != _password.text) {
-                                    return 'The Password You Enterd Does not match';
-                                  } else {
-                                    return null;
-                                  }
-                                },
                               ),
+                              obscureText:
+                                  Provider.of<Auth>(context).obscureText,
+                              controller: _passwordConfirm,
+                              autofocus: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'password confirm field is required';
+                                }
+                                if (value != _password.text) {
+                                  return 'The Password You Enterd Does not match';
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
                             CustomButton(onTap: submit, title: 'Register')
                           ],
