@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import '../widgets/navdrawer.dart';
 
@@ -74,19 +75,19 @@ class _HomeState extends State<Home> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.star,
+                FeatherIcons.alignCenter,
                 size: 30,
               ),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.edit_note,
+                FeatherIcons.plusCircle,
                 size: 30,
               ),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.deblur,
+                FeatherIcons.aperture,
                 size: 30,
               ),
             ),

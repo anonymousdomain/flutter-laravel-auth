@@ -17,9 +17,17 @@ class NavDrawer extends StatelessWidget {
           if (auth.authenticated) {
             return ListView(
               children: [
-                ListTile(
-                  title: Text(auth.user?.email ?? ''),
-                ),
+                // ignore: unnecessary_null_comparison
+                DrawerHeader(child:auth==null?CircleAvatar(
+                  backgroundColor: Colors.blue,
+                ):ListTile(
+                  leading:CircleAvatar(
+                    backgroundColor:Colors.blue,
+                  ),
+                  title:Text(auth.user?.name??''),
+                  subtitle:Text(auth.user?.email??''),
+                  trailing:Text(auth.user?.id??''),
+                )),
                 ListTile(
                   title: Text('posts'),
                   onTap: () => Navigator.push(context,

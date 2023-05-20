@@ -43,6 +43,7 @@ dependencies:
   flutter_svg: ^1.1.6
   smooth_page_indicator: ^1.0.0+2
   flutter_feather_icons: ^2.0.0+1
+  feather_icons: ^1.2.0
 
 dev_dependencies:
   flutter_test:
