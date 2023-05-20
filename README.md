@@ -3,7 +3,7 @@
 an implimentation of mobile authentication using laravel rest api 
 
 ## steps to test this out 
-1 first clone this project and run ``` $flutter install ```
+1 first clone this project and run ``` flutter run  ```
 
 2 connect your device or emulator to debug then run ```$flutter run ```
 
